@@ -57,6 +57,43 @@ public class AssignmentFivePhaseTwo
       {
          
       }
+      
+      public int getNumCardsPerHand()
+      {
+         return numCardsPerHand;
+      }
+      
+      public int getNumPlayers()
+      {
+         return numPlayers;
+      }
+   }
+   
+   private static class GUICard
+   {
+      // 14 = A thru K + joker
+      private static Icon[][] iconCards = new ImageIcon[14][4];
+      private static Icon iconBack;
+      static boolean iconsLoaded = false;
+      
+      // TODO implement method
+      public static void loadCardIcons()
+      {
+         
+      }
+      
+      // TODO import card class and implement method
+      public static Icon getIcon(Card card)
+      {
+         // example return
+         // return iconCards[valueAsInt(card)][suitAsInt(card)];
+      }
+      
+      // TODO implement method
+      public static Icon getBackCardIcon()
+      {
+
+      }
    }
 }
 
