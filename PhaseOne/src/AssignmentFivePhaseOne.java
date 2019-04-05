@@ -27,12 +27,14 @@ public class AssignmentFivePhaseOne
       // build the file names ("AC.gif", "2C.gif", "3C.gif", "TC.gif", etc.)
       // in a SHORT loop.  For each file name, read it in and use it to
       // instantiate each of the 57 Icons in the icon[] array.
+      //exclude BK.gif (back image)
        File folder = new File(IMAGE_FOLDER_NAME);
        File[] listOfFiles = folder.listFiles();
        if (listOfFiles != null) {
           for (int i = 0; i < listOfFiles.length; i++) {
-             if (listOfFiles[i].isFile()) {
-                icon[i] = new ImageIcon(IMAGE_FOLDER_NAME + "/" +  listOfFiles[i].getName());
+             String fileName = listOfFiles[i].getName();
+             if (listOfFiles[i].isFile() && !fileName.equals("BK.gif")) {
+                icon[i] = new ImageIcon(IMAGE_FOLDER_NAME + "/" +  fileName);
              }
          }
        }
