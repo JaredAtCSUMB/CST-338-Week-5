@@ -1,4 +1,6 @@
 import java.awt.*;
+import java.io.File;
+
 import javax.swing.*;
 import javax.swing.border.*;
 /**
@@ -52,10 +54,16 @@ public class AssignmentFivePhaseTwo
       private int numPlayers;
       public JPanel pnlComputerHand, pnlHumanHand, pnlPlayArea;
       
-      // TODO
       public CardTable(String title, int numCardsPerHand, int numPlayers)
       {
-         
+         if (numCardsPerHand > MAX_CARDS_PER_HAND) {
+            throw new IllegalArgumentException("Max number of cards per hand:" + MAX_CARDS_PER_HAND);
+         }
+         if (numPlayers > MAX_PLAYERS) {
+            throw new IllegalArgumentException("Max number of players are:" + MAX_PLAYERS);
+         }
+         this.numCardsPerHand = numCardsPerHand;
+         this.numPlayers = numPlayers;
       }
       
       public int getNumCardsPerHand()
@@ -71,28 +79,71 @@ public class AssignmentFivePhaseTwo
    
    private static class GUICard
    {
+      //TODO: Should we move this folder?
+      public static final String IMAGE_FOLDER_NAME = "PhaseOne/images";
+      public static final String BACK_IMAGE_NAME = "BK.gif";
+
+      public static final int MAX_ROW = 14;
+      public static final int MAX_COLUMN = 4;
+      
       // 14 = A thru K + joker
-      private static Icon[][] iconCards = new ImageIcon[14][4];
+      //The 52 + 4 jokers Icons will be read and stored into the iconCards[][] array.
+      private static Icon[][] iconCards = new ImageIcon[MAX_ROW][MAX_COLUMN];
+      
+      //The card-back image in the iconBack member
       private static Icon iconBack;
+      
       static boolean iconsLoaded = false;
       
-      // TODO implement method
+      static {
+         loadCardIcons();
+      }
+      
+      /**
+       *  Don't require the client to call this method. 
+       */
       public static void loadCardIcons()
       {
+         if (iconsLoaded ) {
+            return;
+         }
+         //Load iconBack image
+         iconBack= new ImageIcon(IMAGE_FOLDER_NAME + "/" +  BACK_IMAGE_NAME);
          
+         //Load other icons(cards)
+         File folder = new File(IMAGE_FOLDER_NAME);
+         File[] listOfFiles = folder.listFiles();
+         int j = 0;
+         int k = 0;
+         if (listOfFiles != null) {
+            for (int i = 0; i < listOfFiles.length; i++) {
+               String fileName = listOfFiles[i].getName();
+               if (listOfFiles[i].isFile() && !fileName.equals(BACK_IMAGE_NAME)) {
+                  ImageIcon imageIcon = new ImageIcon(IMAGE_FOLDER_NAME + "/" +  fileName);
+                  
+                  if (k == MAX_COLUMN) {
+                     j++;
+                     k = 0;
+                  }
+                  iconCards[j][k] = imageIcon;
+                  k++;
+               }
+           }
+         }
+         iconsLoaded = true;
       }
       
       // TODO import card class and implement method
       public static Icon getIcon(Card card)
       {
+         return null;
          // example return
          // return iconCards[valueAsInt(card)][suitAsInt(card)];
       }
       
-      // TODO implement method
       public static Icon getBackCardIcon()
       {
-
+         return iconBack;
       }
    }
 }
