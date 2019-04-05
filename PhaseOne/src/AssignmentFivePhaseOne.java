@@ -1,5 +1,10 @@
-import javax.swing.*;
-import java.awt.*;
+import java.awt.FlowLayout;
+import java.io.File;
+
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 /**
  * This application...
  * 
@@ -8,6 +13,7 @@ import java.awt.*;
  */
 public class AssignmentFivePhaseOne
 {
+   public static final String IMAGE_FOLDER_NAME = "PhaseOne/images";
 
    // static for the 57 icons and their corresponding labels
    // normally we would not have a separate label for each card, but
@@ -16,28 +22,98 @@ public class AssignmentFivePhaseOne
    static final int NUM_CARD_IMAGES = 57; // 52 + 4 jokers + 1 back-of-card image
    static Icon[] icon = new ImageIcon[NUM_CARD_IMAGES];
       
-   // TODO
    static void loadCardIcons()
    {
       // build the file names ("AC.gif", "2C.gif", "3C.gif", "TC.gif", etc.)
       // in a SHORT loop.  For each file name, read it in and use it to
       // instantiate each of the 57 Icons in the icon[] array.
+       File folder = new File(IMAGE_FOLDER_NAME);
+       File[] listOfFiles = folder.listFiles();
+       if (listOfFiles != null) {
+          for (int i = 0; i < listOfFiles.length; i++) {
+             if (listOfFiles[i].isFile()) {
+                icon[i] = new ImageIcon(IMAGE_FOLDER_NAME + "/" +  listOfFiles[i].getName());
+             }
+         }
+       }
    }
    
    // turns 0 - 13 into "A", "2", "3", ... "Q", "K", "X"
-   // TODO
    static String turnIntIntoCardValue(int k)
    {
       // an idea for a helper method (do it differently if you wish)
-      return "";
+      String ret = "";
+      switch (k) {
+      case 0:
+         ret = "A";
+         break;
+      case 1:
+         ret = "2";
+         break;
+      case 2:
+         ret = "3";
+         break;
+      case 3:
+         ret = "4";
+         break;
+      case 4:
+         ret = "5";
+         break;
+      case 5:
+         ret = "6";
+         break;
+      case 6:
+         ret = "7";
+         break;
+      case 7:
+         ret = "8";
+         break;
+      case 8:
+         ret = "9";
+         break;
+      case 9:
+         ret = "10";
+         break;
+      case 10:
+         ret = "J";
+         break;
+      case 11:
+         ret = "Q";
+         break;
+      case 12:
+         ret = "K";
+         break;
+      case 13:
+         ret = "K";
+         break;
+      default:
+         throw new IllegalArgumentException();
+      }
+      return ret;
    }
    
    // turns 0 - 3 into "C", "D", "H", "S"
-   // TODO
    static String turnIntIntoCardSuit(int j)
    {
       // an idea for another helper method (do it differently if you wish)
-      return "";
+      String ret = "";
+      switch (j) {
+      case 0:
+         ret = "C";
+         break;
+      case 1:
+         ret = "D";
+         break;
+      case 2:
+         ret = "H";
+         break;
+      case 3:
+         ret = "S";
+         break;
+      default:
+         throw new IllegalArgumentException();
+      }
+      return ret;
    }
    
    // a simple main to throw all the JLabels out there for the world to see
