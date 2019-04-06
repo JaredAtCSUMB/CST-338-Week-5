@@ -95,7 +95,7 @@ public class Deck
    {
       int k = 0; //used to count the index of the masterPack deck.
       Card.Suit[] suits = Card.Suit.values();
-      char[] cardValues = {'A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K'};
+      char[] cardValues = {'A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'X'};
 
       //if null then create new deck
       if(masterPack[51] == null) {
@@ -105,5 +105,39 @@ public class Deck
             }
          }
       }
+   }
+   
+   // make sure that there are not too many instances of the card in the deck
+   // if you add it.  Return false if there will be too many.  It should put
+   // the card on the top of the deck.
+   // TODO
+   public boolean addCard(Card card)
+   {
+      return true;
+   }
+   
+   // you are looking to remove a specific card from the deck.  Put the
+   // current top card into its place.  Be sure the card you need is actually
+   // still in the deck, if not return false.
+   // TODO
+   public boolean removeCard(Card card)
+   {
+      return true;
+   }
+   
+   // put all of the cards in the deck back into the right order according to
+   // their values.  Is there another method somewhere that already does this
+   // that you could refer to?
+   // TODO
+   public void sort()
+   {
+      
+   }
+   
+   // return the number of cards remaining in the deck.
+   // TODO
+   public int getNumCards()
+   {
+      return 0;
    }
 }

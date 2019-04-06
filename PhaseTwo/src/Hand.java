@@ -125,4 +125,31 @@ public class Hand
   
        return cardToInspect;
     }
+    
+    public Card playCard(int cardIndex)
+    {
+       if ( numCards == 0 ) {
+          //Creates a card that does not work
+          return new Card('M', Card.Suit.spades);
+       }
+       
+       //Decreases numCards.
+       Card card = myCards[cardIndex];
+       
+       numCards--;
+       for(int i = cardIndex; i < numCards; i++) {
+          myCards[i] = myCards[i+1];
+       }
+       
+       myCards[numCards] = null;
+       
+       return card;
+    }
+    
+    // will sort the hand by calling the arraySort() method in the Card class
+    // TODO
+    public void sort()
+    {
+       
+    }
 }
