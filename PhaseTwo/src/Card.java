@@ -8,6 +8,9 @@ class Card
    private Suit suit;
    public enum Suit {clubs, diamonds, hearts, spades};
 
+   public static char[] ORDERED_CARD_VALUES = new char[] 
+         {'A','2','3','4','5','6','7','8','9','T','J','Q','K','X'};
+   
    // Default card is 'A of spades'
    public Card()
    {
@@ -79,7 +82,7 @@ class Card
 
 /*
     * Checks the validity of value and suit.
-    * Valid values: A, 2, 3, 4, 5, 6, 7, 8, 9, T, J, Q, K
+    * Valid values: A, 2, 3, 4, 5, 6, 7, 8, 9, T, J, Q, K, X (Joker)
     * Valid suits: clubs, diamonds, hearts, spades
     * Note: suits are not validated at this time
     */
@@ -101,6 +104,7 @@ class Card
          case 'J':
          case 'Q':
          case 'K':
+         case 'X':
             validCard = true;
             break;
          default:
@@ -139,4 +143,24 @@ class Card
    {
       this.errorFlag = errorFlag;
    }
+   
+   /**
+    * 
+    * @return ordered card values
+    */
+   public static char[] valuRanks() {
+      return ORDERED_CARD_VALUES;
+   }
+   
+   /**
+    * Sort the incoming array of cards using a bubble sort routine.
+    * Sort by Value and suit. The suits are ordered as follows: spades, hearts, diamonds, clubs.
+    * @param cards
+    * @param arraySize
+    */
+   static void arraySort(Card[] cards, int arraySize) {
+      
+   }
+   
+
 }
