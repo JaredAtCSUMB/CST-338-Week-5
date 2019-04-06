@@ -47,7 +47,7 @@ public class AssignmentFivePhaseTwo
 
       //Test loading the GUICard
       GUICard guiCard = new GUICard();
-      Card card = new Card('X', Card.Suit.diamonds);
+      Card card = new Card('A', Card.Suit.spades);
       Icon icon = GUICard.getIcon(card);
       myCardTable.add(new JLabel(icon));
 
@@ -198,16 +198,16 @@ public class AssignmentFivePhaseTwo
          
          switch(column) {
          case 0:
-            ret.append('C');
+            ret.append('S');
             break;
          case 1:
-            ret.append('D');
-            break;
-         case 2:
             ret.append('H');
             break;
+         case 2:
+            ret.append('D');
+            break;
          case 3:
-            ret.append('S');
+            ret.append('C');
             break;
          default:
             throw new IllegalArgumentException("Illegal value of column");
@@ -292,16 +292,16 @@ public class AssignmentFivePhaseTwo
          int ret = 0;
          Card.Suit suit = card.getSuit();
          switch(suit) {
-         case clubs:
+         case spades:
             ret = 0;
             break;
-         case diamonds:
+         case hearts:
             ret = 1;
             break;
-         case hearts:
+         case diamonds:
             ret = 2;
             break;
-         case spades:
+         case clubs:
             ret = 3;
             break;
          default:
