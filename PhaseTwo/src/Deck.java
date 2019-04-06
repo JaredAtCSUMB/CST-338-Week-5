@@ -4,8 +4,8 @@
  */
 public class Deck
 {
-   public static final int MAX_CARDS = 6 * 52;
-   private static Card[] masterPack = new Card[52];
+   public static final int MAX_CARDS = 6 * 56;
+   private static Card[] masterPack = new Card[56];
    private Card[] cards;
    private int topCard;
    
@@ -21,24 +21,24 @@ public class Deck
       allocateMasterPack();
 
       //Fatal error if more than 6 decks used. 
-      if (numPacks * 52 > MAX_CARDS) {
+      if (numPacks * 56 > MAX_CARDS) {
          System.out.println("Fatal Error. Too many decks. Need "
                + "count between 1 and 6");
          System.exit(0);
       }
 
-      this.cards = new Card[52 * numPacks];
+      this.cards = new Card[56 * numPacks];
       init(numPacks);
    }
    
    //Initiates the cards array from the masterPack
    public void init(int numPacks)
    {
-      topCard = 52 * numPacks - 1;
+      topCard = 56 * numPacks - 1;
       int x = 0;
 
       for(int i = 0; i < numPacks; i++) {
-         for(int j = 0; j < 52; j++) {
+         for(int j = 0; j < 56; j++) {
             cards[x++] = masterPack[j];
          }
       }
@@ -90,7 +90,7 @@ public class Deck
       return cardToInspect;
    }
    
-   //creates the master pack of 52 cards that does not change
+   //creates the master pack of 56 cards that does not change
    private static void allocateMasterPack()
    {
       int k = 0; //used to count the index of the masterPack deck.
