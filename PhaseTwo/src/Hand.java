@@ -46,8 +46,9 @@ public class Hand
      * 
      * @param numCards
      */
-    public void setNumCards(int numCards) {
+    public boolean setNumCards(int numCards) {
        this.numCards = numCards;
+       return true;
     }
 
     /**
@@ -59,6 +60,7 @@ public class Hand
           return;
        }
      
+       this.numCards = 0;
        this.myCards = new Card[MAX_CARDS];
     }
     
@@ -117,7 +119,7 @@ public class Hand
   
        if (this.myCards == null || this.myCards.length == 0 || k > this.myCards.length) {
           Card errorCard = new Card();
-          errorCard.setErrorFlag(true);
+          errorCard.setValue('E');
           cardToInspect =  errorCard;
        } else {
          cardToInspect = this.myCards[k];

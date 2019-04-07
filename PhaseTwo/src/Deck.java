@@ -81,7 +81,7 @@ public class Deck
       if(this.cards == null || this.cards.length == 0
             || k > this.cards.length) {
          Card errorCard = new Card();
-         errorCard.setErrorFlag(true);
+         errorCard.setValue('E');
          cardToInspect = errorCard; 
       } else {
          cardToInspect = this.cards[k];

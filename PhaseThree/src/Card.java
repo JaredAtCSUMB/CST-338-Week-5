@@ -71,7 +71,8 @@ class Card
    {
       boolean areEqual;
       
-      if(value == card.value && suit == card.suit) {
+      if(value == card.value && suit == card.suit
+            && errorFlag == card.errorFlag) {
          areEqual = true;
       } else {
          areEqual = false;
@@ -119,9 +120,10 @@ class Card
       return suit;
    }
 
-   public void setSuit(Suit suit)
+   public boolean setSuit(Suit suit)
    {
       this.suit = suit;
+      return true;
    }
 
    public char getValue()
@@ -129,19 +131,15 @@ class Card
       return value;
    }
 
-   public void setValue(char value)
+   public boolean setValue(char value)
    {
       this.value = value;
+      return true;
    }
 
    public boolean isErrorFlag()
    {
       return errorFlag;
-   }
-
-   public void setErrorFlag(boolean errorFlag)
-   {
-      this.errorFlag = errorFlag;
    }
    
    /**
