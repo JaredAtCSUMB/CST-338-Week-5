@@ -184,7 +184,7 @@ public class AssignmentFivePhaseTwo
     */
    private static class GUICard
    {
-      public static final String IMAGE_FOLDER_NAME = "PhaseOne/images";
+      public static final String IMAGE_FOLDER_NAME = "images";
       public static final String BACK_IMAGE_NAME = "BK.gif";
 
       public static final int MAX_ROW = 14;
