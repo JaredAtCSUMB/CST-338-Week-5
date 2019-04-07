@@ -1,10 +1,13 @@
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
 /**
  * This application...
  * 
@@ -22,9 +25,6 @@ public class AssignmentFivePhaseTwo
    
    public static void main(String[] args)
    {
-      int k;
-      Icon tempIcon;
-      
       // establish main frame in which program will run
       CardTable myCardTable 
          = new CardTable("CardTable", NUM_CARDS_PER_HAND, NUM_PLAYERS);
@@ -33,27 +33,114 @@ public class AssignmentFivePhaseTwo
       myCardTable.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
       // set up layout which will control placement of buttons, etc.
-      FlowLayout layout = new FlowLayout(FlowLayout.CENTER, 5, 20);   
+      FlowLayout layout = new FlowLayout(FlowLayout.CENTER, 5, 20);
       myCardTable.setLayout(layout);
 
-      // CREATE LABELS ----------------------------------------------------
-      // code goes here ...
-  
-      // ADD LABELS TO PANELS -----------------------------------------
-      // code goes here ...
-      
+      //Create a Deck
+      Deck deck = new Deck();
+      deck.shuffle();
+
+      Hand computerHand = dealHand(myCardTable, deck, computerLabels, true);
+      Hand yourHand = dealHand(myCardTable, deck, humanLabels, false);
+
+      displayHandArea(myCardTable, "Computer Hand", computerLabels);
+
       // and two random cards in the play region (simulating a computer/hum ply)
-      // code goes here ...
+      displayPlayingArea(myCardTable, computerHand, yourHand);
 
-      //Test loading the GUICard
-      GUICard guiCard = new GUICard();
-      Card card = new Card('A', Card.Suit.spades);
-      Icon icon = GUICard.getIcon(card);
-      myCardTable.add(new JLabel(icon));
-
+      // My Hand
+      displayHandArea(myCardTable, "Your Hand", humanLabels);
+      
       // show everything to the user
       myCardTable.setVisible(true);
 
+   }
+   
+   /**
+    * Deals hand from a Deck.
+    * Stores the your hand icons in JLabels array
+    * 
+    * @param myCardTable
+    * @param deck
+    * @param JLabels
+    * @return Hand
+    */
+   private static Hand dealHand(CardTable myCardTable, Deck deck, JLabel[] JLabels, boolean isBackCard) {
+      // Create a Hand (dealer or player)
+      Hand hand = new Hand();
+      for (int i = 0; i < NUM_CARDS_PER_HAND; i ++) {
+         Card dealCard = deck.dealCard();
+         hand.takeCard(dealCard);
+         //Create an icon and store in an array later use.
+         Icon icon = null;
+         if (isBackCard) {
+            icon = GUICard.getBackCardIcon();
+         } else {
+            icon = GUICard.getIcon(dealCard);
+         }
+         JLabel jlabel = new JLabel(icon);
+         JLabels[i] = jlabel;
+      }
+      return hand;
+   }
+   
+   /**
+    * Displays your hand.
+    * @param myCardTable
+    * @param yourHand
+    */
+   private static void displayHandArea(CardTable myCardTable, String areaTitle, JLabel[] JLables) {
+      // My Hand
+      JPanel pnlHand = new JPanel();
+      Border border = new TitledBorder(areaTitle);
+      pnlHand.setBorder(border);
+      //Don't display every card in hand to this area as one card will be displayed in the playing area.
+      for (int i = 0; i < NUM_CARDS_PER_HAND - 1; i ++) {
+         pnlHand.add(JLables[i]);
+      }
+      myCardTable.add(pnlHand);
+   }
+   
+   /**
+    * Create a Playing Area Hand
+    * 
+    * @param myCardTable
+    * @param computerHand
+    * @param yourHand
+    */
+   private static void displayPlayingArea(CardTable myCardTable, Hand computerHand, Hand yourHand ) {
+      JPanel pnlPlayArea = new JPanel();
+      Border border = new TitledBorder("Playing Area");
+      pnlPlayArea.setBorder(border);
+
+      GridLayout layout = new GridLayout(2, 2);
+      pnlPlayArea.setLayout(layout);
+      
+      // Create a Playing Area Hand
+      //Play Computer Card
+      Card computerCard = computerHand.playCard();
+      Icon computerCardIcon = GUICard.getIcon(computerCard);
+      JLabel computerCardJLabel = new JLabel(computerCardIcon);
+      playedCardLabels[0] = computerCardJLabel;
+      JLabel computerLabel = new JLabel( "Computer", JLabel.CENTER );
+      playLabelText[0] = computerLabel;
+
+
+      //Play Your Card
+      Card yourCard = yourHand.playCard();
+      Icon yourCardIcon = GUICard.getIcon(yourCard);
+      JLabel yourCardJLabel = new JLabel(yourCardIcon);
+      playedCardLabels[1] = yourCardJLabel;
+      JLabel yourHandLabel = new JLabel( "You", JLabel.CENTER );
+      playLabelText[1] = yourHandLabel;
+
+      //Add labels to the play area
+      pnlPlayArea.add(computerCardJLabel);
+      pnlPlayArea.add(yourCardJLabel);
+      pnlPlayArea.add(computerLabel);
+      pnlPlayArea.add(yourHandLabel);
+
+      myCardTable.add(pnlPlayArea);
    }
    
    private static class CardTable extends JFrame

@@ -128,6 +128,11 @@ public class Hand
        return cardToInspect;
     }
     
+    /**
+     * 
+     * @param cardIndex
+     * @return
+     */
     public Card playCard(int cardIndex)
     {
        if ( numCards == 0 ) {
@@ -148,10 +153,11 @@ public class Hand
        return card;
     }
     
-    // will sort the hand by calling the arraySort() method in the Card class
-    // TODO
+    /**
+     * will sort the hand by calling the arraySort() method in the Card class
+     */
     public void sort()
     {
-       
+       Card.arraySort(this.myCards);
     }
 }

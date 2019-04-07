@@ -225,9 +225,8 @@ class Card
     * Sort the incoming array of cards using a bubble sort routine.
     * Sort by Value and suit. The suits are ordered as follows: spades, hearts, diamonds, clubs.
     * @param cards
-    * @param arraySize
     */
-   static void arraySort(Card[] cards, int arraySize) {
+   public static void arraySort(Card[] cards) {
       int n = cards.length;
       // Sort by Value first.
       for (int i = 0; i < n - 1; i++) {
