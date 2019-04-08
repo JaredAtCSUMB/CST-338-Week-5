@@ -161,4 +161,3 @@ public class Hand
        Card.arraySort(this.myCards);
     }
 }
-

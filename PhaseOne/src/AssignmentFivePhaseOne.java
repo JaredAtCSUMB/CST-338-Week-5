@@ -13,7 +13,7 @@ import javax.swing.JLabel;
  */
 public class AssignmentFivePhaseOne
 {
-   public static final String IMAGE_FOLDER_NAME = "PhaseOne/images";
+   public static final String IMAGE_FOLDER_NAME = "images";
 
    // static for the 57 icons and their corresponding labels
    // normally we would not have a separate label for each card, but

@@ -1,4 +1,3 @@
-
 /*
  * A class that represents a playing card
  */
