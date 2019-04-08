@@ -21,6 +21,11 @@ public class AssignmentFivePhaseThree
       int numPacksPerDeck = 1;
       int numJokersPerPack = 0;
       int numUnusedCardsPerPack = 0;
+      Card[] unusedCardsPerPack = null;
+      CardGameFramework highCardGame = new CardGameFramework( 
+            numPacksPerDeck, numJokersPerPack,  
+            numUnusedCardsPerPack, unusedCardsPerPack, 
+            NUM_PLAYERS, NUM_CARDS_PER_HAND);
       
       // establish main frame in which program will run
       CardTable myCardTable 
