@@ -107,37 +107,52 @@ public class Deck
       }
    }
    
-   // make sure that there are not too many instances of the card in the deck
-   // if you add it.  Return false if there will be too many.  It should put
+   // make sure that there are not too many instances of the card in the deck if you add it.
+   // Return false if there will be too many.  It should put
    // the card on the top of the deck.
-   // TODO
    public boolean addCard(Card card)
    {
+      if (this.cards == null || this.topCard == this.cards.length) {
+         return false;
+      }
+      this.cards[topCard++] = card;
       return true;
    }
    
    // you are looking to remove a specific card from the deck.  Put the
    // current top card into its place.  Be sure the card you need is actually
    // still in the deck, if not return false.
-   // TODO
    public boolean removeCard(Card card)
    {
-      return true;
+      if (this.cards == null || this.cards.length == 0) {
+         return false;
+      }
+      boolean exists = false;
+      for (int i = 0; i < this.cards.length; i ++) {
+         Card cardInDeck = this.cards[i];
+         if (cardInDeck.getValue() == card.getValue() &&
+               cardInDeck.getSuit() == card.getSuit()) {
+            //Found the matching card. Remove it and put the current top card into its place
+            exists = true;
+            this.cards[i] = this.cards[topCard];
+            this.cards[topCard] = null;
+            topCard--;
+         }
+      }
+      return exists;
    }
    
-   // put all of the cards in the deck back into the right order according to
-   // their values.  Is there another method somewhere that already does this
-   // that you could refer to?
-   // TODO
+   /**
+    * put all of the cards in the deck back into the right order according to their values and suits. 
+    */
    public void sort()
    {
-      
+      Card.arraySort(this.cards);
    }
    
    // return the number of cards remaining in the deck.
-   // TODO
    public int getNumCards()
    {
-      return 0;
+      return this.cards.length;
    }
 }
