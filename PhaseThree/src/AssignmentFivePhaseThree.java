@@ -69,12 +69,11 @@ public class AssignmentFivePhaseThree
       JPanel pnlComputerArea = new JPanel();
       JPanel pnlYourHandArea = new JPanel();
 
-      createHandJLabels(myCardTable, computerHand, computerHand, computerLabels, false, pnlPlayArea, pnlComputerArea, pnlYourHandArea);
+      createHandJLabels(myCardTable, computerHand, computerHand, computerLabels, true, pnlPlayArea, pnlComputerArea, pnlYourHandArea);
       createHandJLabels(myCardTable, yourHand, computerHand, humanLabels, false, pnlPlayArea, pnlComputerArea, pnlYourHandArea);
 
       displayHandArea(myCardTable, "Computer Hand", computerLabels, pnlComputerArea);
 
-      // and two random cards in the play region (simulating a computer/hum ply)
       displayPlayingArea(pnlPlayArea, myCardTable, null, null);
 
       // My Hand
