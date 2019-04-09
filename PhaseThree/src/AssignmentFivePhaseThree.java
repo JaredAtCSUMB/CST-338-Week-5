@@ -2,11 +2,13 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Random;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
@@ -67,8 +69,8 @@ public class AssignmentFivePhaseThree
       JPanel pnlComputerArea = new JPanel();
       JPanel pnlYourHandArea = new JPanel();
 
-      createHandJLabels(myCardTable, computerHand, computerLabels, true, pnlPlayArea, pnlComputerArea, pnlYourHandArea);
-      createHandJLabels(myCardTable, yourHand, humanLabels, false, pnlPlayArea, pnlComputerArea, pnlYourHandArea);
+      createHandJLabels(myCardTable, computerHand, computerHand, computerLabels, false, pnlPlayArea, pnlComputerArea, pnlYourHandArea);
+      createHandJLabels(myCardTable, yourHand, computerHand, humanLabels, false, pnlPlayArea, pnlComputerArea, pnlYourHandArea);
 
       displayHandArea(myCardTable, "Computer Hand", computerLabels, pnlComputerArea);
 
@@ -90,7 +92,7 @@ public class AssignmentFivePhaseThree
     * @param JLabels
     * @param isBackCard
     */
-   private static void createHandJLabels(CardTable myCardTable, Hand hand, JLabel[] JLabels, boolean isBackCard, JPanel pnlPlayArea, JPanel pnlComputerArea, JPanel pnlYourHandArea) {
+   private static void createHandJLabels(CardTable myCardTable, Hand hand, Hand computerHand, JLabel[] JLabels, boolean isBackCard, JPanel pnlPlayArea, JPanel pnlComputerArea, JPanel pnlYourHandArea) {
       for (int i = 0; i < NUM_CARDS_PER_HAND; i ++) {
          //Create an icon and store in an array later use.
          Icon icon = null;
@@ -100,7 +102,7 @@ public class AssignmentFivePhaseThree
             icon = GUICard.getBackCardIcon();
          } else {
             icon = GUICard.getIcon(dealCard);
-            highCardListener = new HighCardListener(myCardTable, dealCard, hand, pnlPlayArea, pnlComputerArea, pnlYourHandArea);
+            highCardListener = new HighCardListener(myCardTable, dealCard, hand, computerHand, pnlPlayArea, pnlComputerArea, pnlYourHandArea);
          }
          JLabel jlabel = new JLabel(icon);
          if (highCardListener != null) {
@@ -212,14 +214,16 @@ public class AssignmentFivePhaseThree
       private CardTable myCardTable;
       private Card card;
       private Hand hand;
+      private Hand computerHand;
       private JPanel pnlPlayArea;
       private JPanel pnlComputerArea;
       private JPanel pnlYourHandArea;
       
-      HighCardListener(CardTable myCardTable, Card card, Hand hand, JPanel pnlPlayArea, JPanel pnlComputerArea, JPanel pnlYourHandArea) {
+      HighCardListener(CardTable myCardTable, Card card, Hand hand, Hand computerHand, JPanel pnlPlayArea, JPanel pnlComputerArea, JPanel pnlYourHandArea) {
          this.myCardTable = myCardTable;
          this.card = card;
          this.hand = hand;
+         this.computerHand = computerHand;
          this.pnlPlayArea = pnlPlayArea;
          this.pnlComputerArea = pnlComputerArea;
          this.pnlYourHandArea = pnlYourHandArea;
@@ -242,13 +246,32 @@ public class AssignmentFivePhaseThree
                break;
             }
          }
-         
          pnlYourHandArea.remove(e.getComponent());
          
-         //3) pick and add the card from the computer hand and remove it from the hand as well.
-         
+         //3) Randomly pick and add the card from the computer hand and remove it from the hand as well.
+         int computerHandCards = this.computerHand.getNumCards() - 1;
+         Random r = new Random();
+         int cCard = r.nextInt((computerHandCards - 0) + 1);
+
+         Card computerCard = computerHand.playCard(cCard);
+         icon = GUICard.getIcon(computerCard);
+         iconJLabel = new JLabel(icon);
+         playedCardLabels[1] = iconJLabel;
+         pnlPlayArea.add(iconJLabel);
+         pnlComputerArea.remove(cCard);
          
          //Refresh the JFrame
+         myCardTable.revalidate();
+
+         //Determine who won
+         if (this.card.getValueAsInt() > computerCard.getValueAsInt()) {
+            JOptionPane.showMessageDialog(myCardTable, "You Won!");
+         } else {
+            JOptionPane.showMessageDialog(myCardTable, "Sorry You Lost!");
+         }
+         
+         //Clean up the playing area
+         pnlPlayArea.removeAll();
          myCardTable.revalidate();
       }
 
