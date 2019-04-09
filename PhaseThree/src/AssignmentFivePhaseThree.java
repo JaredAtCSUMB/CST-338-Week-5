@@ -1,6 +1,15 @@
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.border.*;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
 /**
  * This application...
  * 
@@ -46,19 +55,32 @@ public class AssignmentFivePhaseThree
       Hand computerHand = highCardGame.getHand(0);
       Hand yourHand = highCardGame.getHand(1);
       
-      createHandJLabels(myCardTable, computerHand, computerLabels, true);
-      createHandJLabels(myCardTable, yourHand, humanLabels, false);
+      //HighCard Game
+      
+      // Create a Playing Area Hand
+      JPanel pnlPlayArea = new JPanel();
+      Border border = new TitledBorder("Playing Area");
+      pnlPlayArea.setBorder(border);
+      GridLayout gridLayout = new GridLayout(2, 2);
+      pnlPlayArea.setLayout(gridLayout);
+      
+      JPanel pnlComputerArea = new JPanel();
+      JPanel pnlYourHandArea = new JPanel();
 
-      displayHandArea(myCardTable, "Computer Hand", computerLabels);
+      createHandJLabels(myCardTable, computerHand, computerLabels, true, pnlPlayArea, pnlComputerArea, pnlYourHandArea);
+      createHandJLabels(myCardTable, yourHand, humanLabels, false, pnlPlayArea, pnlComputerArea, pnlYourHandArea);
+
+      displayHandArea(myCardTable, "Computer Hand", computerLabels, pnlComputerArea);
 
       // and two random cards in the play region (simulating a computer/hum ply)
-      displayPlayingArea(myCardTable, computerHand, yourHand);
+      displayPlayingArea(pnlPlayArea, myCardTable, null, null);
 
       // My Hand
-      displayHandArea(myCardTable, "Your Hand", humanLabels);
+      displayHandArea(myCardTable, "Your Hand", humanLabels, pnlYourHandArea);
       
       // show everything to the user
       myCardTable.setVisible(true);
+
    }
    
    /**
@@ -68,17 +90,22 @@ public class AssignmentFivePhaseThree
     * @param JLabels
     * @param isBackCard
     */
-   private static void createHandJLabels(CardTable myCardTable, Hand hand, JLabel[] JLabels, boolean isBackCard) {
+   private static void createHandJLabels(CardTable myCardTable, Hand hand, JLabel[] JLabels, boolean isBackCard, JPanel pnlPlayArea, JPanel pnlComputerArea, JPanel pnlYourHandArea) {
       for (int i = 0; i < NUM_CARDS_PER_HAND; i ++) {
          //Create an icon and store in an array later use.
          Icon icon = null;
+         HighCardListener highCardListener = null;
          Card dealCard = hand.inspectCard(i);
          if (isBackCard) {
             icon = GUICard.getBackCardIcon();
          } else {
             icon = GUICard.getIcon(dealCard);
+            highCardListener = new HighCardListener(myCardTable, dealCard, hand, pnlPlayArea, pnlComputerArea, pnlYourHandArea);
          }
          JLabel jlabel = new JLabel(icon);
+         if (highCardListener != null) {
+            jlabel.addMouseListener(highCardListener);
+         }
          JLabels[i] = jlabel;
       }
    }
@@ -88,60 +115,63 @@ public class AssignmentFivePhaseThree
     * @param myCardTable
     * @param yourHand
     */
-   private static void displayHandArea(CardTable myCardTable, String areaTitle, JLabel[] JLables) {
+   private static void displayHandArea(CardTable myCardTable, String areaTitle, JLabel[] JLables, JPanel pnlHand) {
       // My Hand
-      JPanel pnlHand = new JPanel();
       Border border = new TitledBorder(areaTitle);
       pnlHand.setBorder(border);
-      //Don't display every card in hand to this area as one card will be displayed in the playing area.
-      for (int i = 0; i < NUM_CARDS_PER_HAND - 1; i ++) {
+      for (int i = 0; i < NUM_CARDS_PER_HAND; i ++) {
          pnlHand.add(JLables[i]);
       }
       myCardTable.add(pnlHand);
    }
    
+
    /**
-    * Create a Playing Area Hand
     * 
     * @param myCardTable
-    * @param computerHand
-    * @param yourHand
+    * @param computerCard
+    * @param yourCard
+    * @return
     */
-   private static void displayPlayingArea(CardTable myCardTable, Hand computerHand, Hand yourHand ) {
-      JPanel pnlPlayArea = new JPanel();
-      Border border = new TitledBorder("Playing Area");
-      pnlPlayArea.setBorder(border);
+   private static void displayPlayingArea(JPanel pnlPlayArea, CardTable myCardTable, Card computerCard, Card yourCard ) {
 
-      GridLayout layout = new GridLayout(2, 2);
-      pnlPlayArea.setLayout(layout);
-      
-      // Create a Playing Area Hand
       //Play Computer Card
-      Card computerCard = computerHand.playCard();
-      Icon computerCardIcon = GUICard.getIcon(computerCard);
-      JLabel computerCardJLabel = new JLabel(computerCardIcon);
-      playedCardLabels[0] = computerCardJLabel;
+      JLabel computerCardJLabel = null;
+      if (computerCard != null) {
+         Icon computerCardIcon = GUICard.getIcon(computerCard);
+         computerCardJLabel = new JLabel(computerCardIcon);
+         playedCardLabels[0] = computerCardJLabel;
+      }
       JLabel computerLabel = new JLabel( "Computer", JLabel.CENTER );
       playLabelText[0] = computerLabel;
 
 
       //Play Your Card
-      Card yourCard = yourHand.playCard();
-      Icon yourCardIcon = GUICard.getIcon(yourCard);
-      JLabel yourCardJLabel = new JLabel(yourCardIcon);
-      playedCardLabels[1] = yourCardJLabel;
+      JLabel yourCardJLabel = null;
+      if (yourCard != null) {
+         Icon yourCardIcon = GUICard.getIcon(yourCard);
+         yourCardJLabel = new JLabel(yourCardIcon);
+         playedCardLabels[1] = yourCardJLabel;
+      }
       JLabel yourHandLabel = new JLabel( "You", JLabel.CENTER );
       playLabelText[1] = yourHandLabel;
 
       //Add labels to the play area
-      pnlPlayArea.add(computerCardJLabel);
-      pnlPlayArea.add(yourCardJLabel);
+      
+      if (computerCardJLabel != null) {
+         pnlPlayArea.add(computerCardJLabel);
+      }
+      if (yourCardJLabel != null) {
+         pnlPlayArea.add(yourCardJLabel);
+      }
+      
       pnlPlayArea.add(computerLabel);
       pnlPlayArea.add(yourHandLabel);
 
       myCardTable.add(pnlPlayArea);
    }
    
+
    private static class CardTable extends JFrame
    {
       static int MAX_CARDS_PER_HAND = 56;
@@ -173,6 +203,75 @@ public class AssignmentFivePhaseThree
       }
    }
    
+   /**
+    * 
+    * @author charlesk
+    *
+    */
+   private static class HighCardListener implements MouseListener {
+      private CardTable myCardTable;
+      private Card card;
+      private Hand hand;
+      private JPanel pnlPlayArea;
+      private JPanel pnlComputerArea;
+      private JPanel pnlYourHandArea;
+      
+      HighCardListener(CardTable myCardTable, Card card, Hand hand, JPanel pnlPlayArea, JPanel pnlComputerArea, JPanel pnlYourHandArea) {
+         this.myCardTable = myCardTable;
+         this.card = card;
+         this.hand = hand;
+         this.pnlPlayArea = pnlPlayArea;
+         this.pnlComputerArea = pnlComputerArea;
+         this.pnlYourHandArea = pnlYourHandArea;
+      }
+
+      @Override
+      public void mouseClicked(MouseEvent e) {
+         // Play the card to the playing are when clicked.
+         //1) Add the card to the playing area
+         Icon icon = GUICard.getIcon(card);
+         JLabel iconJLabel = new JLabel(icon);
+         playedCardLabels[0] = iconJLabel;
+         pnlPlayArea.add(iconJLabel);
+         
+         //2) remove the card from the hand and hand area.
+         for (int i = 0; i < hand.getNumCards(); i ++) {
+            Card card = hand.inspectCard(i);
+            if (card.getValue() == this.card.getValue() && card.getSuit() == this.card.getSuit()) {
+               hand.playCard(i);
+               break;
+            }
+         }
+         
+         pnlYourHandArea.remove(e.getComponent());
+         
+         //3) pick and add the card from the computer hand and remove it from the hand as well.
+         
+         
+         //Refresh the JFrame
+         myCardTable.revalidate();
+      }
+
+      @Override
+      public void mousePressed(MouseEvent e) {
+         // TODO Auto-generated method stub
+      }
+
+      @Override
+      public void mouseReleased(MouseEvent e) {
+         // TODO Auto-generated method stub
+      }
+
+      @Override
+      public void mouseEntered(MouseEvent e) {
+         // TODO Auto-generated method stub
+      }
+
+      @Override
+      public void mouseExited(MouseEvent e) {
+         // TODO Auto-generated method stub
+      }
+   }
    /**
     *  It will read the image files and store them in a static Icon array. 
     *  Rather than a 1-D array of Phase 1, this will be a 2-D array to facilitate addressing the value and suit of a Card in order get its Icon.
