@@ -22,10 +22,15 @@ public class AssignmentFivePhaseThree
       int numJokersPerPack = 0;
       int numUnusedCardsPerPack = 0;
       Card[] unusedCardsPerPack = null;
+      
       CardGameFramework highCardGame = new CardGameFramework( 
             numPacksPerDeck, numJokersPerPack,  
             numUnusedCardsPerPack, unusedCardsPerPack, 
             NUM_PLAYERS, NUM_CARDS_PER_HAND);
+      
+      //We have two hands from the highCardGame object.
+      //calling deal to deal all of the cards per each hand.  (7 cards per hand)
+      highCardGame.deal();
       
       // establish main frame in which program will run
       CardTable myCardTable 
@@ -38,12 +43,11 @@ public class AssignmentFivePhaseThree
       FlowLayout layout = new FlowLayout(FlowLayout.CENTER, 5, 20);
       myCardTable.setLayout(layout);
 
-      //Create a Deck
-      Deck deck = new Deck();
-      deck.shuffle();
-
-      Hand computerHand = dealHand(myCardTable, deck, computerLabels, true);
-      Hand yourHand = dealHand(myCardTable, deck, humanLabels, false);
+      Hand computerHand = highCardGame.getHand(0);
+      Hand yourHand = highCardGame.getHand(1);
+      
+      createHandJLabels(myCardTable, computerHand, computerLabels, true);
+      createHandJLabels(myCardTable, yourHand, humanLabels, false);
 
       displayHandArea(myCardTable, "Computer Hand", computerLabels);
 
@@ -58,22 +62,17 @@ public class AssignmentFivePhaseThree
    }
    
    /**
-    * Deals hand from a Deck.
-    * Stores the your hand icons in JLabels array
     * 
     * @param myCardTable
-    * @param deck
+    * @param hand
     * @param JLabels
-    * @return Hand
+    * @param isBackCard
     */
-   private static Hand dealHand(CardTable myCardTable, Deck deck, JLabel[] JLabels, boolean isBackCard) {
-      // Create a Hand (dealer or player)
-      Hand hand = new Hand();
+   private static void createHandJLabels(CardTable myCardTable, Hand hand, JLabel[] JLabels, boolean isBackCard) {
       for (int i = 0; i < NUM_CARDS_PER_HAND; i ++) {
-         Card dealCard = deck.dealCard();
-         hand.takeCard(dealCard);
          //Create an icon and store in an array later use.
          Icon icon = null;
+         Card dealCard = hand.inspectCard(i);
          if (isBackCard) {
             icon = GUICard.getBackCardIcon();
          } else {
@@ -82,7 +81,6 @@ public class AssignmentFivePhaseThree
          JLabel jlabel = new JLabel(icon);
          JLabels[i] = jlabel;
       }
-      return hand;
    }
    
    /**
