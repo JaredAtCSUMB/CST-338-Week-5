@@ -45,7 +45,7 @@ public class AssignmentFivePhaseThree
       // establish main frame in which program will run
       CardTable myCardTable 
          = new CardTable("CardTable", NUM_CARDS_PER_HAND, NUM_PLAYERS);
-      myCardTable.setSize(800, 600);
+      myCardTable.setSize(800, 700);
       myCardTable.setLocationRelativeTo(null);
       myCardTable.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -283,13 +283,29 @@ public class AssignmentFivePhaseThree
          //Refresh the JFrame
          myCardTable.revalidate();
 
-         //Determine who won
-         if (this.card.getValueAsInt() > computerCard.getValueAsInt()) {
-            JOptionPane.showMessageDialog(myCardTable, "You Won!");
-         } else {
-            JOptionPane.showMessageDialog(myCardTable, "Sorry You Lost!");
-         }
+         int yourCardValue = this.card.getValueAsInt();
+         int computerCardValue = computerCard.getValueAsInt();
+         String highCardResultMessage = "";
          
+         //Determine who won
+         if (this.card.getValue() == 'A' && computerCard.getValue() != 'A') {
+            highCardResultMessage = "You Won with Ace!";
+         } else if (computerCard.getValue() == 'A' && this.card.getValue() != 'A') {
+            highCardResultMessage = "You Lost to an Ace!";
+         } else if (computerCard.getValue() == 'A' && this.card.getValue() == 'A') {
+            highCardResultMessage = "Draw with an Ace!";
+         }
+         else {
+            if (yourCardValue > computerCardValue) {
+               highCardResultMessage = "You Won!";
+            } else if (yourCardValue == computerCardValue) {
+               highCardResultMessage = "Draw!";
+            } else {
+               highCardResultMessage = "Sorry You Lost!";
+            }
+         }
+         JOptionPane.showMessageDialog(myCardTable, highCardResultMessage);
+
          //Clean up the playing area
          pnlPlayArea.removeAll();
          myCardTable.revalidate();
