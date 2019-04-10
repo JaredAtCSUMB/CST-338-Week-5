@@ -28,12 +28,12 @@ public class AssignmentFivePhaseTwo
       // establish main frame in which program will run
       CardTable myCardTable 
          = new CardTable("CardTable", NUM_CARDS_PER_HAND, NUM_PLAYERS);
-      myCardTable.setSize(800, 600);
+      myCardTable.setSize(800, 700);
       myCardTable.setLocationRelativeTo(null);
       myCardTable.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
       // set up layout which will control placement of buttons, etc.
-      GridLayout layout = new GridLayout(4, 1);
+      GridLayout layout = new GridLayout(3, 1);
       myCardTable.setLayout(layout);
 
       //Create a Deck
@@ -98,13 +98,15 @@ public class AssignmentFivePhaseTwo
       for (int i = 0; i < NUM_CARDS_PER_HAND - 1; i ++) {
          pnlHand.add(JLables[i]);
       }
+      GridLayout layout = new GridLayout(1, NUM_CARDS_PER_HAND);
+      pnlHand.setLayout(layout);
       myCardTable.add(pnlHand);
    }
    
    /**
     * Create a Playing Area Hand
     * 
-    * @param myCardTable
+    * @param myCardTable 
     * @param computerHand
     * @param yourHand
     */
@@ -115,7 +117,7 @@ public class AssignmentFivePhaseTwo
       pnlPlayArea.setBorder(border);
       
 
-      GridLayout layout = new GridLayout(1, 2);
+      GridLayout layout = new GridLayout(2, 2);
       pnlPlayArea.setLayout(layout);
       pnlPlayAreaPosition.setLayout(layout);
       
@@ -140,11 +142,10 @@ public class AssignmentFivePhaseTwo
       //Add labels to the play area
       pnlPlayArea.add(computerCardJLabel);
       pnlPlayArea.add(yourCardJLabel);
-      pnlPlayAreaPosition.add(computerLabel);
-      pnlPlayAreaPosition.add(yourHandLabel);
+      pnlPlayArea.add(computerLabel);
+      pnlPlayArea.add(yourHandLabel);
 
       myCardTable.add(pnlPlayArea);
-      myCardTable.add(pnlPlayAreaPosition);
    }
    
    private static class CardTable extends JFrame
