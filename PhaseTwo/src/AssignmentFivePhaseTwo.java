@@ -33,7 +33,7 @@ public class AssignmentFivePhaseTwo
       myCardTable.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
       // set up layout which will control placement of buttons, etc.
-      GridLayout layout = new GridLayout(3, 1);
+      GridLayout layout = new GridLayout(4, 1);
       myCardTable.setLayout(layout);
 
       //Create a Deck
@@ -110,11 +110,14 @@ public class AssignmentFivePhaseTwo
     */
    private static void displayPlayingArea(CardTable myCardTable, Hand computerHand, Hand yourHand ) {
       JPanel pnlPlayArea = new JPanel();
+      JPanel pnlPlayAreaPosition = new JPanel();
       Border border = new TitledBorder("Playing Area");
       pnlPlayArea.setBorder(border);
+      
 
-      GridLayout layout = new GridLayout(2, 2);
+      GridLayout layout = new GridLayout(1, 2);
       pnlPlayArea.setLayout(layout);
+      pnlPlayAreaPosition.setLayout(layout);
       
       // Create a Playing Area Hand
       //Play Computer Card
@@ -137,10 +140,11 @@ public class AssignmentFivePhaseTwo
       //Add labels to the play area
       pnlPlayArea.add(computerCardJLabel);
       pnlPlayArea.add(yourCardJLabel);
-      pnlPlayArea.add(computerLabel);
-      pnlPlayArea.add(yourHandLabel);
+      pnlPlayAreaPosition.add(computerLabel);
+      pnlPlayAreaPosition.add(yourHandLabel);
 
       myCardTable.add(pnlPlayArea);
+      myCardTable.add(pnlPlayAreaPosition);
    }
    
    private static class CardTable extends JFrame
