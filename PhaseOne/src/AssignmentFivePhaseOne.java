@@ -119,7 +119,7 @@ public class AssignmentFivePhaseOne
    }
    
    // a simple main to throw all the JLabels out there for the world to see
-   // TODO: this was the main that was provided in the assignment
+   // this was the main that was provided in the assignment
    public static void main(String[] args)
    {
       int k;
