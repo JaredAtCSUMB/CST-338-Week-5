@@ -33,7 +33,7 @@ public class AssignmentFivePhaseTwo
       myCardTable.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
       // set up layout which will control placement of buttons, etc.
-      FlowLayout layout = new FlowLayout(FlowLayout.CENTER, 5, 20);
+      GridLayout layout = new GridLayout(3, 1);
       myCardTable.setLayout(layout);
 
       //Create a Deck
