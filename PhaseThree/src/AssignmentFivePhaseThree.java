@@ -53,7 +53,7 @@ public class AssignmentFivePhaseThree
       myCardTable.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
       // set up layout which will control placement of buttons, etc.
-      GridLayout layout = new GridLayout(4, 1);
+      GridLayout layout = new GridLayout(3, 1);
       myCardTable.setLayout(layout);
 
       Hand computerHand = highCardGame.getHand(0);
@@ -63,25 +63,23 @@ public class AssignmentFivePhaseThree
       
       // Create a Playing Area Hand
       JPanel pnlPlayArea = new JPanel();
-      JPanel pnlPlayAreaPosition = new JPanel();
       Border border = new TitledBorder("Playing Area");
       pnlPlayArea.setBorder(border);
       
-      GridLayout gridLayout = new GridLayout(1, 2);
+      GridLayout gridLayout = new GridLayout(2, 2);
       pnlPlayArea.setLayout(gridLayout);
-      pnlPlayAreaPosition.setLayout(gridLayout);
 
       JPanel pnlComputerArea = new JPanel();
       JPanel pnlYourHandArea = new JPanel();
 
       createHandJLabels(myCardTable, computerHand, computerHand, computerLabels, true, pnlPlayArea, pnlComputerArea,
-            pnlYourHandArea, pnlPlayAreaPosition);
+            pnlYourHandArea, pnlPlayArea);
       createHandJLabels(myCardTable, yourHand, computerHand, humanLabels, false, pnlPlayArea, pnlComputerArea,
-            pnlYourHandArea, pnlPlayAreaPosition);
+            pnlYourHandArea, pnlPlayArea);
 
       displayHandArea(myCardTable, "Computer Hand", computerLabels, pnlComputerArea);
 
-      displayPlayingArea(pnlPlayArea, pnlPlayAreaPosition, myCardTable, null, null);
+      displayPlayingArea(pnlPlayArea, pnlPlayArea, myCardTable, null, null);
 
       // My Hand
       displayHandArea(myCardTable, "Your Hand", humanLabels, pnlYourHandArea);
@@ -242,90 +240,98 @@ public class AssignmentFivePhaseThree
 
       @Override
       public void mouseClicked(MouseEvent e) {
-         pnlPlayAreaPosition.removeAll();
-         pnlPlayArea.removeAll();
+    	  pnlPlayAreaPosition.removeAll();
+          pnlPlayArea.removeAll();
 
-         // Play the card to the playing are when clicked.
-         //1) Add the card to the playing area
-         Icon icon = GUICard.getIcon(card);
-         JLabel iconYourHandJLabel = new JLabel(icon);
-         playedCardLabels[0] = iconYourHandJLabel;
-         
-         //2) remove the card from the hand and hand area.
-         for (int i = 0; i < hand.getNumCards(); i ++) {
-            Card card = hand.inspectCard(i);
-            if (card.getValue() == this.card.getValue() && card.getSuit() == this.card.getSuit()) {
-               hand.playCard(i);
-               break;
-            }
-         }
-         pnlYourHandArea.remove(e.getComponent());
-         pnlYourHandArea.revalidate();
-         
-         //3) Randomly pick and add the card from the computer hand and remove it from the hand as well.
-         int computerHandCards = this.computerHand.getNumCards() - 1;
-         Random r = new Random();
-         int cCard = r.nextInt((computerHandCards - 0) + 1);
+          // Play the card to the playing are when clicked.
+          //1) Add the card to the playing area
+          Icon icon = GUICard.getIcon(card);
+          JLabel iconYourHandJLabel = new JLabel(icon);
+          playedCardLabels[0] = iconYourHandJLabel;
+          
+          //2) remove the card from the hand and hand area.
+          for (int i = 0; i < hand.getNumCards(); i ++) {
+             Card card = hand.inspectCard(i);
+             if (card.getValue() == this.card.getValue() && card.getSuit() == this.card.getSuit()) {
+                hand.playCard(i);
+                break;
+             }
+          }
+          pnlYourHandArea.remove(e.getComponent());
+          pnlYourHandArea.revalidate();
+          
+          //3) Randomly pick and add the card from the computer hand and remove it from the hand as well.
+          int computerHandCards = this.computerHand.getNumCards() - 1;
+          Random r = new Random();
+          int cCard = r.nextInt((computerHandCards - 0) + 1);
 
-         Card computerCard = computerHand.playCard(cCard);
-         icon = GUICard.getIcon(computerCard);
-         JLabel iconComputerJLabel = new JLabel(icon);
-         playedCardLabels[1] = iconComputerJLabel;
-         pnlComputerArea.remove(cCard);
-         pnlComputerArea.revalidate();
-         
-         //Card labels
-         pnlPlayArea.add(iconComputerJLabel);
-         pnlPlayArea.add(iconYourHandJLabel);
-         //Text labels
-         JLabel computerLabel = new JLabel( "Computer", JLabel.CENTER );
-         JLabel yourHandLabel = new JLabel( "You", JLabel.CENTER );
-         pnlPlayAreaPosition.add(computerLabel);
-         pnlPlayAreaPosition.add(yourHandLabel);
+          Card computerCard = computerHand.playCard(cCard);
+          icon = GUICard.getIcon(computerCard);
+          JLabel iconComputerJLabel = new JLabel(icon);
+          playedCardLabels[1] = iconComputerJLabel;
+          pnlComputerArea.remove(cCard);
+          pnlComputerArea.revalidate();
+          
+          //Card labels
+          pnlPlayArea.add(iconComputerJLabel);
+          pnlPlayArea.add(iconYourHandJLabel);
+          //Text labels
+          JLabel computerLabel = new JLabel( "Computer", JLabel.CENTER );
+          JLabel yourHandLabel = new JLabel( "You", JLabel.CENTER );
+          pnlPlayAreaPosition.add(computerLabel);
+          pnlPlayAreaPosition.add(yourHandLabel);
 
-         //Refresh the JFrame
-         myCardTable.revalidate();
+          //Refresh the JFrame
+          myCardTable.revalidate();
 
-         int yourCardValue = this.card.getValueAsInt();
-         int computerCardValue = computerCard.getValueAsInt();
-         String highCardResultMessage = "";
-         
-         //Determine who won
-         if (this.card.getValue() == 'A' && computerCard.getValue() != 'A') {
-            highCardResultMessage = "You Won with Ace!";
-         } else if (computerCard.getValue() == 'A' && this.card.getValue() != 'A') {
-            highCardResultMessage = "You Lost to an Ace!";
-         } else if (computerCard.getValue() == 'A' && this.card.getValue() == 'A') {
-            highCardResultMessage = "Draw with an Ace!";
-         }
-         else {
-            if (yourCardValue > computerCardValue) {
-               highCardResultMessage = "You Won!";
-            } else if (yourCardValue == computerCardValue) {
-               highCardResultMessage = "Draw!";
-            } else {
-               highCardResultMessage = "Sorry You Lost!";
-            }
-         }
-         JOptionPane.showMessageDialog(myCardTable, highCardResultMessage);
+          int yourCardValue = this.card.getValueAsInt();
+          int computerCardValue = computerCard.getValueAsInt();
+          String highCardResultMessage = "";
+          
+          //Determine who won
+          if (this.card.getValue() == 'A' && computerCard.getValue() != 'A') {
+             highCardResultMessage = "You Won with Ace!";
+          } else if (computerCard.getValue() == 'A' && this.card.getValue() != 'A') {
+             highCardResultMessage = "You Lost to an Ace!";
+          } else if (computerCard.getValue() == 'A' && this.card.getValue() == 'A') {
+             highCardResultMessage = "Draw with an Ace!";
+          }
+          else {
+             if (yourCardValue > computerCardValue) {
+                highCardResultMessage = "You Won!";
+             } else if (yourCardValue == computerCardValue) {
+                highCardResultMessage = "Draw!";
+             } else {
+                highCardResultMessage = "Sorry You Lost!";
+             }
+          }
+          JOptionPane.showMessageDialog(myCardTable, highCardResultMessage);
 
-         //Clean up the playing area
-         pnlPlayArea.removeAll();
-         myCardTable.revalidate();
-         myCardTable.repaint();
+          //Clean up the playing area
+          pnlPlayArea.removeAll();
+          myCardTable.revalidate();
+          myCardTable.repaint();
       }
 
       @Override
-      public void mousePressed(MouseEvent e) {/* Auto-generated method stub */}
+      public void mousePressed(MouseEvent e) {
+         // TODO Auto-generated method stub
+      }
 
       @Override
-      public void mouseReleased(MouseEvent e) {/* Auto-generated method stub */}
+      public void mouseReleased(MouseEvent e) {
+    	  
+      }
 
       @Override
-      public void mouseEntered(MouseEvent e) {/* Auto-generated method stub */}
+      public void mouseEntered(MouseEvent e) {
+         // TODO Auto-generated method stub
+      }
 
       @Override
-      public void mouseExited(MouseEvent e) {/* Auto-generated method stub */}
+      public void mouseExited(MouseEvent e) {
+         // TODO Auto-generated method stub
+      }
    }
    /**
     *  It will read the image files and store them in a static Icon array. 
