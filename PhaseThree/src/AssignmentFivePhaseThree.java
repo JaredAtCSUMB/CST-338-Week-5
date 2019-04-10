@@ -12,7 +12,10 @@ import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 /**
- * This application...
+ * This application simulates a 'High-Card' game, with designated
+ * areas for a computers hand, your hand and a playing area. You play by
+ * choosing a card from your hand. It then fetches a card from the computers
+ * hand and determines if you win or lose based on who has the higher card. 
  * 
  * @author Team 6: Jared Cheney, Andrew Meraz, Chul Kim and Agustin Garcia
  *

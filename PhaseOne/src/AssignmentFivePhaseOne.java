@@ -6,7 +6,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 /**
- * This application...
+ * This application simply shows off each of the card images inside a JFrame
  * 
  * @author Team 6: Jared Cheney, Andrew Meraz, Chul Kim and Agustin Garcia
  *

@@ -9,7 +9,9 @@ import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 /**
- * This application...
+ * This application shows off a simulated card game table, with designated
+ * areas for a computers hand, your hand and a playing area. It populates the
+ * playing area with a random card for both the computer and you.
  * 
  * @author Team 6: Jared Cheney, Andrew Meraz, Chul Kim and Agustin Garcia
  *
