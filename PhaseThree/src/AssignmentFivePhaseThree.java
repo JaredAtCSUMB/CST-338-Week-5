@@ -130,6 +130,8 @@ public class AssignmentFivePhaseThree
       for (int i = 0; i < NUM_CARDS_PER_HAND; i ++) {
          pnlHand.add(JLables[i]);
       }
+      GridLayout layout = new GridLayout(1, NUM_CARDS_PER_HAND);
+      pnlHand.setLayout(layout);
       myCardTable.add(pnlHand);
    }
    
