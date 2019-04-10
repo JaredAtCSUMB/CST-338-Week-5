@@ -1,5 +1,3 @@
-import java.awt.FlowLayout;
-
 import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -52,7 +50,7 @@ public class AssignmentFivePhaseThree
       myCardTable.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
       // set up layout which will control placement of buttons, etc.
-      FlowLayout layout = new FlowLayout(FlowLayout.CENTER, 5, 20);
+      GridLayout layout = new GridLayout(4, 1);
       myCardTable.setLayout(layout);
 
       Hand computerHand = highCardGame.getHand(0);
@@ -62,20 +60,25 @@ public class AssignmentFivePhaseThree
       
       // Create a Playing Area Hand
       JPanel pnlPlayArea = new JPanel();
+      JPanel pnlPlayAreaPosition = new JPanel();
       Border border = new TitledBorder("Playing Area");
       pnlPlayArea.setBorder(border);
-      GridLayout gridLayout = new GridLayout(2, 2);
-      pnlPlayArea.setLayout(gridLayout);
       
+      GridLayout gridLayout = new GridLayout(1, 2);
+      pnlPlayArea.setLayout(gridLayout);
+      pnlPlayAreaPosition.setLayout(gridLayout);
+
       JPanel pnlComputerArea = new JPanel();
       JPanel pnlYourHandArea = new JPanel();
 
-      createHandJLabels(myCardTable, computerHand, computerHand, computerLabels, true, pnlPlayArea, pnlComputerArea, pnlYourHandArea);
-      createHandJLabels(myCardTable, yourHand, computerHand, humanLabels, false, pnlPlayArea, pnlComputerArea, pnlYourHandArea);
+      createHandJLabels(myCardTable, computerHand, computerHand, computerLabels, true, pnlPlayArea, pnlComputerArea,
+            pnlYourHandArea, pnlPlayAreaPosition);
+      createHandJLabels(myCardTable, yourHand, computerHand, humanLabels, false, pnlPlayArea, pnlComputerArea,
+            pnlYourHandArea, pnlPlayAreaPosition);
 
       displayHandArea(myCardTable, "Computer Hand", computerLabels, pnlComputerArea);
 
-      displayPlayingArea(pnlPlayArea, myCardTable, null, null);
+      displayPlayingArea(pnlPlayArea, pnlPlayAreaPosition, myCardTable, null, null);
 
       // My Hand
       displayHandArea(myCardTable, "Your Hand", humanLabels, pnlYourHandArea);
@@ -92,9 +95,10 @@ public class AssignmentFivePhaseThree
     * @param JLabels
     * @param isBackCard
     */
-   private static void createHandJLabels(CardTable myCardTable, Hand hand, Hand computerHand, JLabel[] JLabels, boolean isBackCard, JPanel pnlPlayArea, JPanel pnlComputerArea, JPanel pnlYourHandArea) {
-      for (int i = 0; i < NUM_CARDS_PER_HAND; i ++) {
-         //Create an icon and store in an array later use.
+   private static void createHandJLabels(CardTable myCardTable, Hand hand, Hand computerHand, JLabel[] JLabels,
+         boolean isBackCard, JPanel pnlPlayArea, JPanel pnlComputerArea, JPanel pnlYourHandArea, JPanel pnlPlayAreaPosition) {
+      for (int i = 0; i < NUM_CARDS_PER_HAND; i++) {
+         // Create an icon and store in an array later use.
          Icon icon = null;
          HighCardListener highCardListener = null;
          Card dealCard = hand.inspectCard(i);
@@ -102,7 +106,8 @@ public class AssignmentFivePhaseThree
             icon = GUICard.getBackCardIcon();
          } else {
             icon = GUICard.getIcon(dealCard);
-            highCardListener = new HighCardListener(myCardTable, dealCard, hand, computerHand, pnlPlayArea, pnlComputerArea, pnlYourHandArea);
+            highCardListener = new HighCardListener(myCardTable, dealCard, hand, computerHand, pnlPlayArea,
+                  pnlComputerArea, pnlYourHandArea, pnlPlayAreaPosition);
          }
          JLabel jlabel = new JLabel(icon);
          if (highCardListener != null) {
@@ -111,7 +116,7 @@ public class AssignmentFivePhaseThree
          JLabels[i] = jlabel;
       }
    }
-   
+
    /**
     * Displays your hand.
     * @param myCardTable
@@ -135,7 +140,7 @@ public class AssignmentFivePhaseThree
     * @param yourCard
     * @return
     */
-   private static void displayPlayingArea(JPanel pnlPlayArea, CardTable myCardTable, Card computerCard, Card yourCard ) {
+   private static void displayPlayingArea(JPanel pnlPlayArea, JPanel pnlPlayAreaPosition, CardTable myCardTable, Card computerCard, Card yourCard ) {
 
       //Play Computer Card
       JLabel computerCardJLabel = null;
@@ -146,7 +151,6 @@ public class AssignmentFivePhaseThree
       }
       JLabel computerLabel = new JLabel( "Computer", JLabel.CENTER );
       playLabelText[0] = computerLabel;
-
 
       //Play Your Card
       JLabel yourCardJLabel = null;
@@ -167,10 +171,11 @@ public class AssignmentFivePhaseThree
          pnlPlayArea.add(yourCardJLabel);
       }
       
-      pnlPlayArea.add(computerLabel);
-      pnlPlayArea.add(yourHandLabel);
+      pnlPlayAreaPosition.add(computerLabel);
+      pnlPlayAreaPosition.add(yourHandLabel);
 
       myCardTable.add(pnlPlayArea);
+      myCardTable.add(pnlPlayAreaPosition);
    }
    
 
@@ -218,8 +223,10 @@ public class AssignmentFivePhaseThree
       private JPanel pnlPlayArea;
       private JPanel pnlComputerArea;
       private JPanel pnlYourHandArea;
+      private JPanel pnlPlayAreaPosition;
       
-      HighCardListener(CardTable myCardTable, Card card, Hand hand, Hand computerHand, JPanel pnlPlayArea, JPanel pnlComputerArea, JPanel pnlYourHandArea) {
+      HighCardListener(CardTable myCardTable, Card card, Hand hand, Hand computerHand, JPanel pnlPlayArea,
+            JPanel pnlComputerArea, JPanel pnlYourHandArea, JPanel pnlPlayAreaPosition) {
          this.myCardTable = myCardTable;
          this.card = card;
          this.hand = hand;
@@ -227,16 +234,19 @@ public class AssignmentFivePhaseThree
          this.pnlPlayArea = pnlPlayArea;
          this.pnlComputerArea = pnlComputerArea;
          this.pnlYourHandArea = pnlYourHandArea;
+         this.pnlPlayAreaPosition = pnlPlayAreaPosition;
       }
 
       @Override
       public void mouseClicked(MouseEvent e) {
+         pnlPlayAreaPosition.removeAll();
+         pnlPlayArea.removeAll();
+
          // Play the card to the playing are when clicked.
          //1) Add the card to the playing area
          Icon icon = GUICard.getIcon(card);
-         JLabel iconJLabel = new JLabel(icon);
-         playedCardLabels[0] = iconJLabel;
-         pnlPlayArea.add(iconJLabel);
+         JLabel iconYourHandJLabel = new JLabel(icon);
+         playedCardLabels[0] = iconYourHandJLabel;
          
          //2) remove the card from the hand and hand area.
          for (int i = 0; i < hand.getNumCards(); i ++) {
@@ -247,6 +257,7 @@ public class AssignmentFivePhaseThree
             }
          }
          pnlYourHandArea.remove(e.getComponent());
+         pnlYourHandArea.revalidate();
          
          //3) Randomly pick and add the card from the computer hand and remove it from the hand as well.
          int computerHandCards = this.computerHand.getNumCards() - 1;
@@ -255,11 +266,20 @@ public class AssignmentFivePhaseThree
 
          Card computerCard = computerHand.playCard(cCard);
          icon = GUICard.getIcon(computerCard);
-         iconJLabel = new JLabel(icon);
-         playedCardLabels[1] = iconJLabel;
-         pnlPlayArea.add(iconJLabel);
+         JLabel iconComputerJLabel = new JLabel(icon);
+         playedCardLabels[1] = iconComputerJLabel;
          pnlComputerArea.remove(cCard);
+         pnlComputerArea.revalidate();
          
+         //Card labels
+         pnlPlayArea.add(iconComputerJLabel);
+         pnlPlayArea.add(iconYourHandJLabel);
+         //Text labels
+         JLabel computerLabel = new JLabel( "Computer", JLabel.CENTER );
+         JLabel yourHandLabel = new JLabel( "You", JLabel.CENTER );
+         pnlPlayAreaPosition.add(computerLabel);
+         pnlPlayAreaPosition.add(yourHandLabel);
+
          //Refresh the JFrame
          myCardTable.revalidate();
 
@@ -273,6 +293,7 @@ public class AssignmentFivePhaseThree
          //Clean up the playing area
          pnlPlayArea.removeAll();
          myCardTable.revalidate();
+         myCardTable.repaint();
       }
 
       @Override
